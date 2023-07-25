@@ -50,9 +50,9 @@ And all of this will be built in a beautiful and well-organized way!
 
 
 
--[x] Use 'def ...' syntax to create a function
+-[x] Use 'def ...end' syntax to create a function
 -[x] Use 'puts ...' To insert an output
--[x] Use 'class ...' To create class
+-[x] Use 'class ...end' To create class
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -126,6 +126,10 @@ Coming soon
 ## 🔭 Future Features <a name="future-features"></a>
 
 We will create the application (front end part)
+to make it pretty with :
+-Html/CSS 
+-BOOTSTRAP
+-JavaScript
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
