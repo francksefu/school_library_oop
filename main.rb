@@ -13,34 +13,21 @@ def command
 end
 
 def block(inp, person_table, app)
-  return unless inp == '3'
 
-  print 'Do you want to create a student (1) or a teacher(2) ?[Input the number] '
-  num = gets.chomp
-  return unless %w[1 2].include?(num)
-
-  print ' Age : '
-  age = gets.chomp
-  print 'Name : '
-  name = gets.chomp
-  if num == '1'
-    print 'Has parent permission ? [Y/N] : '
-    permission = gets.chomp
-    perm = true if %w[y Y].include?(permission)
-    perm = false if %w[n N].include?(permission)
-    student = app.create_people(age, name, perm, 1, '')
-    person_table.push(student)
-  end
-  if num == '2'
-    print 'Specialization : '
-    specialization = gets.chomp
-    teacher = app.create_people(age, name, '', 2, specialization)
-    person_table.push(teacher)
-  end
-  puts 'Person created successfully'
 end
 
 def looping(inp, person_table, book_table, app)
+
+end
+
+def main
+  book_table = []
+  person_table = []
+  rental_table = []
+  app = App.new
+  inp = 20
+  puts 'Welcome to schoom Library App!'
+  puts ''
   while inp != '7'
     command
     inp = gets.chomp
@@ -60,7 +47,31 @@ def looping(inp, person_table, book_table, app)
       end
     end
 
-    block(inp, person_table, app)
+    return unless inp == '3'
+
+    print 'Do you want to create a student (1) or a teacher(2) ?[Input the number] '
+    num = gets.chomp
+    return unless %w[1 2].include?(num)
+  
+    print ' Age : '
+    age = gets.chomp
+    print 'Name : '
+    name = gets.chomp
+    if num == '1'
+      print 'Has parent permission ? [Y/N] : '
+      permission = gets.chomp
+      perm = true if %w[y Y].include?(permission)
+      perm = false if %w[n N].include?(permission)
+      student = app.create_people(age, name, perm, 1, '')
+      person_table.push(student)
+    end
+    if num == '2'
+      print 'Specialization : '
+      specialization = gets.chomp
+      teacher = app.create_people(age, name, '', 2, specialization)
+      person_table.push(teacher)
+    end
+    puts 'Person created successfully'
 
     if inp == '4'
       print 'Title : '
@@ -109,17 +120,6 @@ def looping(inp, person_table, book_table, app)
     rental_table << app.create_rental(day, book_table[index_b], person_table[index_p])
     puts 'Rentals created successfully'
   end
-end
-
-def main
-  book_table = []
-  person_table = []
-  rental_table = []
-  app = App.new
-  inp = 20
-  puts 'Welcome to schoom Library App!'
-  puts ''
-  looping(inp, person_table, book_table, app)
   puts 'Thank you for use this app!'
 end
 
