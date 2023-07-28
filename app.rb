@@ -1,8 +1,9 @@
-require 'book'
-require 'person'
-require 'rental'
-require 'teacher'
-require 'student'
+require './book'
+require './person'
+require './rental'
+require './teacher'
+require './student'
+require './classrom'
 
 class App
   def list_all_books(books)

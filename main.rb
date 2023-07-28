@@ -1,4 +1,4 @@
-require 'app'
+require './app'
 
 def command
   puts 'Please  choose an option by enterin a number : '
@@ -12,9 +12,6 @@ def command
   puts '7- Exits'
 end
 
-def block(inp, person_table, app); end
-
-def looping(inp, person_table, book_table, app); end
 
 def main
   book_table = []
@@ -27,36 +24,48 @@ def main
   while inp != '7'
     command
     inp = gets.chomp
-    app.list_all_books(book_table) if inp == '1'
 
-    app.list_all_people(person_table) if inp == '2'
-
-    return unless inp == '3'
-
-    print 'Do you want to create a student (1) or a teacher(2) ?[Input the number] '
-    num = gets.chomp
-    return unless %w[1 2].include?(num)
-
-    print ' Age : '
-    age = gets.chomp
-    print 'Name : '
-    name = gets.chomp
-    if num == '1'
-      print 'Has parent permission ? [Y/N] : '
-      permission = gets.chomp
-      perm = true if %w[y Y].include?(permission)
-      perm = false if %w[n N].include?(permission)
-      student = app.create_people(age, name, perm, 1, '')
-      person_table.push(student)
+    if inp == '1'
+      if book_table.length != 0
+        app.list_all_books(book_table)
+      else
+        puts "No book"
+      end
     end
-    if num == '2'
-      print 'Specialization : '
-      specialization = gets.chomp
-      teacher = app.create_people(age, name, '', 2, specialization)
-      person_table.push(teacher)
-    end
-    puts 'Person created successfully'
 
+    if inp == '2'
+      if person_table.length != 0
+        app.list_all_people(person_table)
+      else
+        puts "No people"
+      end
+    end
+
+    if inp == '3'
+      print 'Do you want to create a student (1) or a teacher(2) ?[Input the number] '
+      num = gets.chomp
+      return unless %w[1 2].include?(num)
+
+      print ' Age : '
+      age = gets.chomp
+      print 'Name : '
+      name = gets.chomp
+      if num == '1'
+        print 'Has parent permission ? [Y/N] : '
+        permission = gets.chomp
+        perm = true if %w[y Y].include?(permission)
+        perm = false if %w[n N].include?(permission)
+        student = app.create_people(age, name, perm, 1, '')
+        person_table.push(student)
+      end
+      if num == '2'
+        print 'Specialization : '
+        specialization = gets.chomp
+        teacher = app.create_people(age, name, '', 2, specialization)
+        person_table.push(teacher)
+      end
+      puts 'Person created successfully'
+    end
     if inp == '4'
       print 'Title : '
       title = gets.chomp
