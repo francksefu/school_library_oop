@@ -1,8 +1,4 @@
-class Nameable
-    def correct_name
-      raise NotImplementedError
-    end
-end
+
 
 class Classroom
   attr_accessor :label
@@ -23,13 +19,13 @@ class Person < Nameable
     attr_accessor :name, :age
     attr_reader :id, :rental
   
-    def initialize(age, name = 'Unknown', parent_permission: true)
+    def initialize(age, name = 'Unknown', parent_permission= true)
       super()
       @name = name
       @age = age
       @parent_permission = parent_permission
       @rental = []
-      @id = Random.ran(1..1000)
+      @id = Random.rand(1..1000)
     end
   
     def correct_name
@@ -52,7 +48,7 @@ end
   class Student < Person
     attr_reader :classroom
   
-    def initialize(classroom, age, name = 'Unknown', parent_permission: true)
+    def initialize(classroom, age, name = 'Unknown', parent_permission= true)
       super(age, name, parent_permission)
       @classroom = classroom
     end
@@ -67,9 +63,10 @@ end
     end
   end
   
-  class Teacher
-    def initialize(specialization, age, name = 'Unknown', parent_permission: true)
-      super(age, name, parent_permission)
+  class Teacher < Person
+    attr_accessor :specialization
+    def initialize(specialization, age, name = 'Unknown')
+      super(age, name)
       @specialization = specialization
     end
   
@@ -112,27 +109,31 @@ class App
 
     def list_all_books(books)
         books.each do |i|
-            puts(' Title: \"#{i.title}\", Author : \"#{i.author}\"')
+            puts(" Title: \"#{i.title}\", Author : #{i.author}")
         end
     end
     
     def list_all_people(people)
         people.each do |i|
-            puts "ok"
+            stud = "[Student]"
+            if defined?(i.specialization)
+              stud = "[Teacher]"
+            end
+            puts ("#{stud} Name: #{i.name}, ID : #{i.id} ,Age : #{i.age}")
         end
     end
     
-    def create_person (age, name,parent_permission, cat)
-        if (cat == 1)
-          classr = Classroom.new("1ere")
-          student = Student.new( classr,age, name, parent_permission)
-          return student
-        else 
-            teacher = Teacher.new('teacher', age, name, true)
-            return teacher
-        end
+    def create_people(age, name, parent_permission, cat, specialization)
+      if cat == 1
+        classr = Classroom.new("1ere")
+        student = Student.new(classr, age, name, parent_permission)
+        return student
+      else
+        teacher = Teacher.new(specialization, age, name)
+        return teacher
+      end
     end
-    
+
     def create_book (title, author)
         book = Book.new(title, author)
         return book
@@ -145,8 +146,8 @@ class App
     
     def list_rental (tab, ido)
         tab.each do |i|
-            if(tab[i].person.id == ido)
-                return '\"#{tab[i].book.title} by  #{tab[i].book.author}\"'
+            if(i.person.id == ido)
+                puts " Date : #{i.date}, \"#{i.book.title}\" by  #{i.book.author}"
             end
         end
     end    
@@ -200,21 +201,20 @@ def main
             if (num == "1" || num == "2")
                 print " Age : "
                 age =  gets.chomp
-                puts ""
                 print "Name : "
                 name =  gets.chomp
                 if num == "1"
-                    puts""
                     print "Has parent permission ? [Y/N] : "
                     permission =  gets.chomp
                     perm = true if (permission == "y" || permission == "Y")
                     perm = false if (permission == "n" || permission == "N")
-                    student = (app.create_person(age, name, perm, 1))
-                    #person_table.push(student)
-                    puts student.name
+                    student = (app.create_people(age, name, perm, 1, ""))
+                    person_table.push(student)
                 end
                 if num == "2"
-                    teacher = (app.create_person(age, name, "", 2))
+                    print "Specialization : "
+                    specialization =  gets.chomp
+                    teacher = (app.create_people(age, name, "", 2, specialization))
                     person_table.push(teacher)
                 end
                 puts "Person created successfully"
@@ -222,7 +222,63 @@ def main
 
         end
 
+        if inp == "4"
+          print "Title : "
+          title = gets.chomp
+          print "Author : "
+          author = gets.chomp
+          book_table << app.create_book(title, author)
+          puts "Book created successfully"
+        end
+
+        if inp == "6"
+          print "ID of person : "
+          index = gets.chomp
+          index = index.to_i
+          app.list_rental(rental_table, index)
+        end
+
+        if inp == "1"
+          if book_table != 0
+            app.list_all_books(book_table)
+          end
+        end
+
+        if inp == "5"
+          puts "Select a book from the following list by number"
+          indexB = 0
+          if book_table != 0
+            book_table.each_with_index do |i, idx|
+              puts "#{idx}) Title : \"#{i.title}\", Author : #{i.author}"
+            end
+            index = gets.chomp
+            indexB = index.to_i
+          else
+            next
+          end
+
+          indexP = 0
+          puts "Select a person from the following list by number (not id)"
+          if person_table != 0
+            person_table.each_with_index do |i, idx|
+              stud = "[Student]"
+              if defined?(i.specialization)
+                stud = "[Teacher]"
+              end
+              puts ("#{idx})  #{stud} Name: #{i.name}, ID : #{i.id} ,Age : #{i.age}")
+            end
+            index = gets.chomp
+            indexP = index.to_i
+          else
+            next
+          end
+          print "Date : "
+          day = gets.chomp
+          rental_table << app.create_rental(day, book_table[indexB], person_table[indexP])
+          puts "Rentals created successfully"
+        end
     end
+    puts "Thank you for use this app!"
 end
 
 main()
