@@ -12,13 +12,9 @@ def command
   puts '7- Exits'
 end
 
-def block(inp, person_table, app)
+def block(inp, person_table, app); end
 
-end
-
-def looping(inp, person_table, book_table, app)
-
-end
+def looping(inp, person_table, book_table, app); end
 
 def main
   book_table = []
@@ -31,28 +27,16 @@ def main
   while inp != '7'
     command
     inp = gets.chomp
-    if inp == '1'
-      if book_table.empty?
-        puts 'No book in library'
-      else
-        app.list_all_books(book_table)
-      end
-    end
+    app.list_all_books(book_table) if inp == '1'
 
-    if inp == '2'
-      if person_table.empty?
-        puts 'No person'
-      else
-        app.list_all_people(person_table)
-      end
-    end
+    app.list_all_people(person_table) if inp == '2'
 
     return unless inp == '3'
 
     print 'Do you want to create a student (1) or a teacher(2) ?[Input the number] '
     num = gets.chomp
     return unless %w[1 2].include?(num)
-  
+
     print ' Age : '
     age = gets.chomp
     print 'Name : '
