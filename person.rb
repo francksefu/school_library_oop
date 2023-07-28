@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'nameable'
 
 class Person < Nameable
@@ -11,7 +10,7 @@ class Person < Nameable
     @age = age
     @parent_permission = parent_permission
     @rental = []
-    @id = Random.ran(1..1000)
+    @id = Random.rand(1..1000)
   end
 
   def correct_name
